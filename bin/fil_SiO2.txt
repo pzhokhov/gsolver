@@ -1,0 +1,69 @@
+MAX_TOLERANCE 3e-3
+LAMBDA_V  0.8e-6
+N_T       512
+T_MIN     -100e-15
+T_MAX      100e-15
+
+DISPERSION_FILE    SiO2.rawdisp
+
+
+N_X       128
+N_Y	  128
+
+X_MIN     -30e-6
+Y_MIN     -30e-6
+X_MAX     30e-6
+Y_MAX     30e-6
+
+N_Z        128
+Z_MIN      -10e-6
+Z_MAX      10e-6
+ZNET_TYPE  p3
+
+PULSE_SHAPE  		gg
+DURATION_FWHM		30e-15
+
+
+DIAMETER_FWHM  5e-6
+WAVEFRONT_RADIUS 5
+ENERGY           1e-8
+NOISE_LEVEL      0
+CHIRP_SPECTRAL   0
+
+
+
+NONLIN_REFRINDEX	3.45e-20
+
+RAMAN_FRACTION		0.18
+TAU_RAMAN		32e-15
+OMEGA_RAMAN		8.3e13
+
+NEUTRAL_DENSITY		2.2e28
+RECOMBINATION_TAU	150e-15
+AMBIENT_CARRIERS        0e-6
+COLLISION_TAU		10e-15
+
+IONIZATION_POTENTIAL	9
+
+
+DUMPS_N                 6
+
+DUMPTYPE0               flux
+DUMP_FILENAME0          fil_SiO2_%s_f.udf
+
+DUMPTYPE1		field_axis
+DUMP_FILENAME1 		fil_SiO2_%s_fa.udf
+
+DUMPTYPE2		plasma_max
+DUMP_FILENAME2		fil_SiO2_%s_pm.udf
+
+DUMPTYPE3		plasma_axis
+DUMP_FILENAME3  	fil_SiO2_%s_pa.udf
+
+DUMPTYPE4		full
+DUMP_FILENAME4		fil_SiO2_%s_full.udf
+NZ_DENOM5		50
+
+DUMPTYPE5		maxI
+DUMP_FILENAME5	        fil_SiO2_%s_mI.udf
+
