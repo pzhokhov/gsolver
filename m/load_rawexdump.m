@@ -1,0 +1,37 @@
+function [A,xnet, znet] = load_rawexdump(filename, znodes)
+
+fid = fopen(filename, 'rb');
+if (fid == -1) 
+    error(sprintf('Unable to open file %s', filename));
+end;
+
+if (nargin == 1)
+    znodes = [];
+end;
+
+A = [];
+znet = [];
+N = fread(fid, 1, 'int');
+xnet = fread(fid, N, 'double');
+blockN = fread(fid, 1, 'int');
+i  = 1;
+while (~feof(fid))
+    z = fread(fid, 1,   'double');
+    P = fread(fid, blockN, 'double');
+    if (length(P) ~= blockN) 
+        break;
+    end;
+    
+    if (isempty(znodes) || znodes(length(znet)+1)==i)
+        A = [A complex(P(1:2:end),P(2:2:end))];
+        znet = [znet z];
+        if (length(znet) == length(znodes)) 
+            break;
+        end;
+    end;
+    
+    i = i+1;
+end;
+
+
+fclose(fid);

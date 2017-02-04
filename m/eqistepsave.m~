@@ -1,0 +1,15 @@
+function eqistepsave(A, xnet, znet, filename, k)
+
+if (nargin < 4)
+    error('Too few arguements!');
+end;
+
+if (nargin < 5)
+    k = 2;
+end;
+   
+Nx = length(xnet);
+xneteq = (min(xnet) : (max(xnet)-min(xnet))/(k*Nx-1) : max(xnet))';
+
+Nz = length(znet);
+zneteq = (min(znet) : (max(znet)-min(znet))/(k*Nz-1) : max(znet));

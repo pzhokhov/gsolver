@@ -1,0 +1,12 @@
+function R = phaseshift(X, phi)
+
+N = size(X,1);
+
+fX = fft(X); 
+fX_ = zeros(size(X)); 
+
+fX_(1:N/2,:)=fX(1:N/2,:)*exp(1i*phi); 
+
+fX_(N/2+1:end,:) = fX(N/2+1:end,:)*exp(-1i*phi); 
+
+R = ifft(X); 

@@ -1,0 +1,7 @@
+function neff = ZGP_neff_lambda(l, theta)
+
+no = ZGP_no_lambda(l);
+ne = ZGP_ne_lambda(l);
+
+neff = (sin(theta)^2./ne.^2 + cos(theta)^2./no.^2)^(-0.5);
+

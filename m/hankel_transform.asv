@@ -1,0 +1,18 @@
+function [g,x] = hankel_transform(f, Nf);
+
+f = f(:);
+N = length(f);
+phi = zeros(2*N,1);
+
+alpha = fsolve(@(y)(y+log(1-exp(-y))/(N-1)),1);
+k0 = (2*exp(alpha)+exp(2*alpha))/(1+exp(alpha))^2/(1-exp(-2*alpha));
+x0 = (1+exp(alpha))*exp(-alpha*N)/2;
+x  = x0*exp(alpha*(0:(N-1))).';
+
+phi(1) = k0*(f(2)-f(1))*exp(alpha*(1-N));
+phi(2:(N)) = ([diff(f(2:N)); f(N)].').*exp(alpha.*(-N+(2:N)));
+
+j1 = (besselj(1,2*pi*Nf*x0*exp(alpha*((1-N):N)))).';
+
+s = fft(fft(phi).*ifft(j1));
+g = 1./(Nf.*x).*s(1:N);

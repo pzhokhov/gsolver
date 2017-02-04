@@ -1,0 +1,116 @@
+function W = ion_aniso_(gamma, T, delta)
+
+const_SI; 
+lambda = 800e-9; 
+
+Nt = 1024; 
+t = -10 + (0:(Nt-1))*20/Nt;  t=t(:);
+t = t*1e-15/SI.atomic_time;
+T = T*1e-15/SI.atomic_time;
+
+dt = t(2)-t(1); 
+
+
+w = 2*pi*SI.c/lambda/SI.atomic_frequency; 
+
+
+mx = 0.9;
+my = 0.6; 
+
+delta = delta*w; 
+
+
+A0 = sqrt(mx*delta)./gamma;
+
+E = real(exp(1i*w*t - (t/T).^2));  %electric field
+fE = fft(E);  fE(abs(fE)<1e-3*max(abs(fE)))=0; 
+E = ifft(fE);
+
+A = cumsum(E)*dt; %vector potential
+E = E.*A0./max(A); E0 = max(E); 
+A = A./max(A).*A0; 
+
+
+Ai = cumsum(A)*dt;
+A2i=cumsum(A.^2)*dt; 
+
+E1E2 = E*E.'./E0.^2;
+AI = Ai*ones(1,Nt); AI=-AI+AI.';
+A2I = A2i*ones(1,Nt); A2I=-A2I+A2I.'; 
+
+Xi = t*ones(1,Nt); Xi=Xi.'-Xi;
+
+A1 = A(:)*ones(1,Nt); 
+A2 = A1.';
+
+% for nt=1:length(Nt);
+%  S(:,nt) = S_integral(delta*Xi(:,nt), sqrt(delta)*AI(:,nt)); 
+% end; 
+% x1 = -5:0.02:5; x1=x1(:);
+% x2 = -5:0.02:5; x2=x2(:).'; 
+% 
+% X1 = x1*ones(1,length(x2)); 
+% X2 = ones(length(x1),1)*x2; 
+
+%S0 = S_integral(X1, X2); 
+
+
+%S = interp2(X2, X1, S0, sqrt(delta)*(AI), delta*(Xi), 'linear', 0); 
+
+%S = pi^2/2; S_integral(delta*Xi, zeros(size(Xi))); %sqrt(delta)*AI);
+S = zeros(Nt, Nt); 
+Stark = S; 
+B = S;
+
+load S_; 
+
+sqXi = sqrt(abs(Xi)); 
+
+Bin = sqXi.*(ones(Nt,1)*(A(:).'))-AI./sqXi; 
+Bin(Xi==0) = 0;
+Ain = delta.*abs(Xi);
+
+S = interp2(B_,A_, S_, abs(Bin),  Ain, 'linear', 0);  
+
+Stark = A2I - AI.^2./Xi; Stark(Xi==0)=0;
+
+% hb = waitbar(0, 'Calculating S integral...'); 
+% for nt2 = 1:Nt; 
+%     parfor nt1 = 1:(nt2-3); 
+%         xi = Xi(nt1, nt2); 
+%         sqxi = sqrt(xi); 
+%         S(nt1, nt2) = S_integral(delta*xi, sqxi.*A(nt2) - (Ai(nt2)-Ai(nt1))/sqxi);
+%         B(nt1, nt2) = sqxi.*A(nt2) - (Ai(nt2)-Ai(nt1))/sqxi;
+%         Stark(nt1, nt2) = (A2I(nt1, nt2)-AI(nt1, nt2).^2./xi);
+%      
+%     end;
+%     waitbar((nt2/Nt).^2, hb); 
+% end;
+% close(hb); 
+
+
+% S = S_intergral(delta*Xi, sqrt(Xi).*(A.*ones(1,Nt) - AI
+% 
+% tA = exp(-sqrt(delta)./abs(A*ones(size(A)).')); tA(~(Xi==0))=0;
+% 
+% S = pi^2/2*exp(1i*delta*Xi)+tA;
+
+
+%expA2I = exp(-1i*(A2I-AI.^2./Xi)); expA2I(Xi==0)=1;  
+
+%I = E1E2.*exp(-1i.*Stark).*S;
+
+dT = exp(-1i*delta.*Xi); fdT = fft(dT); fdT(abs(fdT) < 1e-3*max(abs(fdT(:))))=0; 
+dT = ifft(fdT); 
+I = E1E2.*dT./(delta + A1.^2)./(delta + A2.^2); %I(Xi<=2*dt)=0;
+
+W = zeros(size(t)); W(1)=I(1,1); 
+
+for nt=2:Nt; 
+    W(nt) = W(nt-1)+real(sum(I(1:nt,nt)))+real(sum(I(nt,1:(nt-1))));
+
+end; 
+
+%W = cumsum(sum(I));
+%save ionaniso.mat 
+W = W*dt;

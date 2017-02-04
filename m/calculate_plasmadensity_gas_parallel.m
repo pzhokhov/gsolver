@@ -1,0 +1,50 @@
+function ro = calculate_plasmadensity_gas_parallel(field, tmin, tmax, P)
+
+    ionization_potential = 15.6;
+    ionization_potential2 = 43;
+    lambda0 = 800e-9;
+
+    const_SI;
+    
+    ron = P * SI.Loschmidt_number;
+    
+    
+    if (nargin == 3) 
+        P=1;
+    end;
+    ro = zeros(size(field(:,:)));
+	N_T = size(ro, 1);
+    Np  = size(ro, 2);
+    
+    tstep = (tmax-tmin)/N_T;
+    
+    parfor np = 1:Np
+        
+     ro_ = zeros(N_T,1);
+     field_ = field(:,np);
+     ro1 = 0;
+     ro2 = 0;
+     
+     for nt = 2 : N_T
+		    
+        lnI0 = log(abs(field_(nt-1).^2)); 
+        lnI1 = log(abs(field_(nt).^2)); 
+        
+	    k1 = tstep*(ron-ro1)*PPT_rate_ln(lambda0, 1, ionization_potential, lnI0, 1);
+	    k2 = tstep*(ron-ro1-k1)*PPT_rate_ln(lambda0, 1, ionization_potential, lnI1, 1);
+        
+        k3 = tstep*(ro1-ro2)      *PPT_rate_ln(lambda0, 1, ionization_potential2, lnI0, 2);
+	    k4 = tstep*(ro1+k1-ro2-k3)*PPT_rate_ln(lambda0, 1, ionization_potential2, lnI1, 2);
+         
+        ro1 = ro1 + 0.5*(k1+k2);
+        ro2 = ro2 + 0.5*(k3+k4);
+
+	    ro_(nt)  = ro1 + ro2;
+       
+     end;
+     ro(:,np)=ro_; 
+    end;
+    ro = reshape(ro, size(field)); 
+end
+      
+    

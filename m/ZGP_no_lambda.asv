@@ -1,0 +1,7 @@
+function n = ZGP_no_lambda(lambda)
+
+lambda = lambda/1e-6;
+
+n2 = 4.61511 + 5.12798 * lambda^2/(lambda^2 - 0.13
+
+n = n.^(0.5);

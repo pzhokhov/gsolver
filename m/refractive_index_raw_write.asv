@@ -1,0 +1,18 @@
+function n = refractive_index_raw_write(filename, lambda, n, ni)
+
+fid = fopen(filename, 'wb');
+type = fwrite(fid,3,'int'); 
+N = length(lambda);
+lambda = lambda(:);
+if (iscomplex(n))
+    n_ = [real(n(:)); imag(n_(:))]; n_ = n_(:);
+else
+    n_ = [n(:); zeros(size(n(:)))]; n_ = n_(:);
+end;
+fwrite(fid, N, 'int');
+const_SI; omega = 2*pi*SI.c./lambda;
+fwrite(fid, omega, 'double');
+fwrite(fid, n, 'double'); n_=complex(n_(1:2:end),n_(2:2:end)); 
+
+n = interp1(w, n_, omega);
+
