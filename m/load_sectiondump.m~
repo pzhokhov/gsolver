@@ -1,0 +1,42 @@
+function [A, Nt, tmin, tmax, xnet, znet, group_velocity, omega0, wavenum0, omega, wavenum] = load_sectiondump(filename)
+
+fid = fopen(filename, 'rb');
+if (fid < 0) 
+	error(sprintf('Unable to open file %s', filename)); 
+end;
+
+omega0 = fread(fid, 1, 'double');
+wavenum0 = fread(fid, 2, 'double'); wavenum0 = complex(wavenum0(1), wavenum0(2));
+Vg = fread(fid, 1, 'double');
+Nt = fread(fid, 1, 'int');
+tmin = fread(fid, 1, 'double');
+tmax = fread(fid, 1, 'double');
+
+omega  = fread(fid, Nt, 'double');
+wavenum     = fread(fid, 2*Nt, 'double');
+
+wavenum    = complex(   wavenum(1:2:end),    wavenum(2:2:end));
+
+Nx = fread(fid, 1, 'int');
+xnet = fread(fid, Nx, 'double');
+Ny = fread(fid, 1, 'int');
+ynet = fread(fid, Ny, 'double');
+Nz   = fread(fid, 1, 'int');
+znet = fread(fid, Nz, 'double');
+
+cz = 0;
+A = complex(zeros(Nt, Nx, Nz));
+chunkN = 2*Nt*Nx+1;
+t = 10;
+while (not(feof(fid)));
+	cz = cz+1;
+	if (cz == t)
+		disp('cz = t');
+	end;		
+	buf = fread(fid, chunkN, 'double');
+	if (length(buf) < chunkN || feof(fid))
+		break;
+	end;
+	znet(cz) = buf(1);
+	A(:,:,cz) = reshape(complex(buf(2:2:end), buf(3:2:end)), Nt, Nx);
+end;	

@@ -1,0 +1,6 @@
+function uA = unlin(A);
+N = size(A,1); 
+N_ = numel(A)/N;
+uA = reshape(A,N, N_); 
+T = ndgrid((1:N)/N, ones(1,N_));  
+uA = uA - T*

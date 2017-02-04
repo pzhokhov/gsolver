@@ -1,0 +1,10 @@
+function [R, C] = terminal_size;
+
+[status, str] = system('stty -a | grep rows');
+
+str = str(strfind(str, 'rows')+4:end);
+R = str2num(str(1:strtok(str,';')));
+
+str = str(strfind(str, 'columns')+7:end);
+C = str2num(str(1:strtok(str,';')));
+

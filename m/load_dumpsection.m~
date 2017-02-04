@@ -1,0 +1,7 @@
+function [A, Nt, tmin, tmax, xnet, znet, group_velocity, omega0, wavenum0, omega, wavenum] = load_dumpsection(filename)
+
+fid = fopen(filename, 'rb');
+if (fid < 0) 
+	error(sprintf('Unable to open file %s', filename)); 
+
+omega0 = fread(fid, 1, 'double');

@@ -1,0 +1,34 @@
+function D = load_UDF(filename)
+
+fname = ls(filename);
+fid = fopen(fname,'rb');
+
+dumpstandard = fread(fid, 7, 'char=>char');
+if (~strncmp(dumpstandard', 'UDF1.0',6)) error('%s - unsupported dump standard!',dumpstandard); end;
+float_size = fread(fid, 1, 'int');
+if (float_size ~= 8 && float_size ~= 4) error('%d - unknown float size!', float_size); end;
+iscomplex  = fread(fid, 1, 'int');
+if (iscomplex ~= 1 && iscomplex ~= 0) error('%d - unknown iscomplex value (must be 0 or 1)!', float_size); end;
+tN         = fread(fid, 1, 'int');
+xN         = fread(fid, 1, 'int');
+yN         = fread(fid, 1, 'int');
+zN         = fread(fid, 1, 'int');
+
+if (iscomplex==0) 
+ if (float_size == 8) 
+     D = (fread(fid, tN*xN*yN*zN, 'double'));
+     zN_ = length(D)/tN/xN/yN;
+     D = reshape(D, tN, xN, yN, zN_);
+ else                 D = reshape(fread(fid, tN*xN*yN*zN, 'float'),  tN, xN, yN, zN);
+ end;
+else
+ if (float_size == 8) 
+     buf = fread(fid, 2*tN*xN*yN*zN, 'double');
+ else
+     buf = fread(fid, 2*tN*xN*yN*zN, 'float' );
+ D = reshape(complex(buf(1:2:end),buf(2:2:end)), Nt, Nx, Ny, Nz);
+ end;
+end;
+
+fclose(fid);
+  

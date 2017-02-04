@@ -1,0 +1,39 @@
+function [W, lnW] = keldysh_rate_ln(lambda, refrind, IONIZATION_POTENTIAL, lnI)
+
+LIGHT_VELOCITY		=	299792458;
+VACUUM_PERMITTIVITY	=	8.854187817e-12;
+VACUUM_PERMEABILITY	=	1.2566370615e-6;
+
+ELECTRON_CHARGE     =	1.60217733e-19;
+ELECTRON_MASS		=	9.1093897e-31;
+PLANCK_CONSTANT		=	6.6260755e-34;
+PLANCK_CONSTANT_REDUCED  =	PLANCK_CONSTANT/2/pi;
+VACUUM_IMPEDANCE = sqrt(VACUUM_PERMEABILITY/VACUUM_PERMITTIVITY);
+    
+    OMEGA0  = 2*pi*LIGHT_VELOCITY/lambda; 
+    
+    sumN = 15;
+	s
+    
+	m = 0.64*ELECTRON_MASS;
+	gamma = OMEGA0*sqrt(m*IONIZATION_POTENTIAL)/ELECTRON_CHARGE./E;
+	Gamma = gamma.*gamma./(1+gamma.*gamma);
+	Xi    = 1./(1+gamma.*gamma);
+	[Kg,Eg] = ellipke(Gamma); 
+	[Kx,Ex] = ellipke(Xi);
+
+    alph = pi.*(Kg-Eg)./Ex; bet = pi*pi./4./Kx./Ex;
+	
+	x     = 2/pi*IONIZATION_POTENTIAL/PLANCK_CONSTANT_REDUCED/OMEGA0.*Ex./sqrt(Gamma); 
+	nu    = floor(x+1) - x;
+	
+	Q = 0; 
+    for n=0:sumN
+        Q = Q+exp(-n.*alph).*dawson(sqrt(bet.*(n+2.*nu)));
+    end;
+	Q = Q.*sqrt(pi/2./Kx);
+    
+	W = 2.*OMEGA0/9/pi.*(OMEGA0.*m./PLANCK_CONSTANT_REDUCED./sqrt(Gamma)).^1.5.*Q.*exp(-alph.*floor(x+1));
+
+	lnW = log(2.*OMEGA0/9/pi) + 1.5.*log(OMEGA0.*m./PLANCK_CONSTANT_REDUCED./sqrt(Gamma))+log(Q)-alph.*floor(x+1);
+
