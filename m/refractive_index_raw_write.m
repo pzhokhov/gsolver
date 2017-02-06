@@ -1,5 +1,6 @@
 function refractive_index_raw_write(filename, lambda, n)
-
+% wants lambda/n in order from high wavelengths to low wavelengths! In SI
+% units.
 fid = fopen(filename, 'wb');
 fwrite(fid,3,'int'); 
 N = length(lambda);
