@@ -4,13 +4,13 @@ N_T       512
 T_MIN     -100e-15
 T_MAX      100e-15
 
-DISPERSION_FILE    al2O3_test.rawdisp
+DISPERSION_FILE    real_Al2O3.rawdisp
 
 
 N_R     512
 
 
-R_MAX     300e-6
+R_MAX     600e-6
 
 N_Z        128
 Z_MIN      -200e-6
@@ -23,7 +23,7 @@ DURATION_FWHM		30e-15
 
 DIAMETER_FWHM  100e-6
 WAVEFRONT_RADIUS 200e-6
-ENERGY           1e-20
+ENERGY           1e-6
 NOISE_LEVEL      0
 CHIRP_SPECTRAL   0
 
@@ -46,21 +46,21 @@ IONIZATION_POTENTIAL	7.3
 DUMPS_N                 6
 
 DUMPTYPE0               flux
-DUMP_FILENAME0          fil_Al2O3_%s_f.udf
+DUMP_FILENAME0          dumps/fil1_Al2O3_%s_f.udf
 
 DUMPTYPE1		field_axis
-DUMP_FILENAME1 		fil_Al2O3_%s_fa.udf
+DUMP_FILENAME1 		dumps/fil1_Al2O3_%s_fa.udf
 
 DUMPTYPE2		plasma_max
-DUMP_FILENAME2		fil_Al2O3_%s_pm.udf
+DUMP_FILENAME2		dumps/fil1_Al2O3_%s_pm.udf
 
 DUMPTYPE3		average_spectrum
-DUMP_FILENAME3  	fil_Al2O3_%s_s.udf
+DUMP_FILENAME3  	dumps/fil1_Al2O3_%s_s.udf
 
 DUMPTYPE4		full
-DUMP_FILENAME4		fil_Al2O3_%s_full.udf
+DUMP_FILENAME4		dumps/fil1_Al2O3_%s_full.udf
 NZ_DENOM5		50
 
 DUMPTYPE5		maxI
-DUMP_FILENAME5	        fil_Al2O3_%s_mI.udf
+DUMP_FILENAME5	        dumps/fil1_Al2O3_%s_mI.udf
 

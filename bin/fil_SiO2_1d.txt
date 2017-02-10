@@ -10,7 +10,7 @@ DISPERSION_FILE    SiO2.rawdisp
 N_R     512
 
 
-R_MAX     300e-6
+R_MAX     600e-6
 
 N_Z        128
 Z_MIN      -200e-6
