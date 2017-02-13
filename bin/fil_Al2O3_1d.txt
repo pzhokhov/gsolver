@@ -1,18 +1,18 @@
 MAX_TOLERANCE 3e-3
 LAMBDA_V  0.8e-6
-N_T       512
+N_T       516
 T_MIN     -100e-15
 T_MAX      100e-15
 
 DISPERSION_FILE    real_Al2O3.rawdisp
 
 
-N_R     512
+N_R     516
 
 
 R_MAX     600e-6
 
-N_Z        128
+N_Z        126
 Z_MIN      -200e-6
 Z_MAX      200e-6
 ZNET_TYPE  e
