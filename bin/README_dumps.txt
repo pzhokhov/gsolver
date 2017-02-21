@@ -4,7 +4,7 @@ INITIAL PARAMETERS
 
 lambda_V = central wavelength of the pulse in vacuum
 
-N_T = number of poitns in time
+N_T = number of points in time
 
 T_MIN/T_MAX = temporal window from T_MIN to T_MAX (assuming pulse is at T = 0). each time step = (T_MAX - T_MIN)/N_T
 
@@ -14,7 +14,7 @@ N_X, N_Y, N_R = # of poitns in transverse directions
 
 X_MIN/MAX, ... = size of spatial window
 
-Z_MIN/MAX = propogation window
+Z_MIN/MAX = propogation window; this determines crystal thickness. It is only necessary to simulate the part of the crystal where the B integral from -infinty to Z_MIN is < 0.1.
 
 ZNET_TYPE = couple of options here: e = equidistant, each step is the same size. p3 = polynomial of the 3rd degree, there are more points in the center than the edge. 
 
