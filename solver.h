@@ -43,7 +43,7 @@
 
 //#define _SHOW_EVERY_STEP
 
-#define NONLINEARITY_ON 
+//#define NONLINEARITY_ON 
 //#define _SHOW_EVERY_STEP
 //#define NO_AVALANCHE
 //#define NO_PLASMARESPONSE
