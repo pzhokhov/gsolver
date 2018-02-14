@@ -1,0 +1,61 @@
+MAX_TOLERANCE 3e-3
+LAMBDA_V  0.8e-6
+N_T       1024
+T_MIN     -690e-15
+T_MAX      690e-15
+
+DISPERSION_FILE    SiO2.rawdisp
+
+
+N_R     512
+
+
+R_MAX     40e-6
+
+N_Z        256
+Z_MIN      -75e-6
+Z_MAX	   75e-6
+ZNET_TYPE  e
+
+PULSE_SHAPE  		gg
+DURATION_FWHM		160e-15
+
+
+DIAMETER_FWHM    15.54e-6
+WAVEFRONT_RADIUS 75e-6
+ENERGY           1e-6
+NOISE_LEVEL      0
+CHIRP_SPECTRAL   0
+
+
+
+NONLIN_REFRINDEX	3.54e-20
+
+RAMAN_FRACTION		0.18
+TAU_RAMAN		32e-15
+OMEGA_RAMAN		8.3e13
+
+NEUTRAL_DENSITY		2.1e28
+RECOMBINATION_TAU	150e-15
+AMBIENT_CARRIERS        0e-6
+COLLISION_TAU		23.3e-15
+
+IONIZATION_POTENTIAL	9
+
+
+DUMPS_N                 5
+
+DUMPTYPE0               flux
+DUMP_FILENAME0          /scratch/user/dferna11/fil1muj_nd_check_SiO2_%s_f.udf
+
+DUMPTYPE1		field_axis
+DUMP_FILENAME1 		/scratch/user/dferna11/fil1muj_nd_check_SiO2_%s_fa.udf
+
+DUMPTYPE2		plasma_max
+DUMP_FILENAME2		/scratch/user/dferna11/fil1muj_nd_check_SiO2_%s_pm.udf
+
+DUMPTYPE3		average_spectrum
+DUMP_FILENAME3  	/scratch/user/dferna11/fil1muj_nd_check_SiO2_%s_s.udf
+
+DUMPTYPE4		maxI
+DUMP_FILENAME4	        /scratch/user/dferna11/fil1muj_nd_check_SiO2_%s_mI.udf
